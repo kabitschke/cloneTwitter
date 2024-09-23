@@ -12,11 +12,19 @@ type Props = {
   filled?: boolean;
   value?: string;
   onChange?: (newValue: string) => void;
+  onEnter?: () => void;
 }
 
-export const Input = ({ placeholder, password, icon, filled, value, onChange }: Props) => {
+export const Input = ({ placeholder, password, icon, filled, value, onChange, onEnter }: Props) => {
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && onEnter) {
+      onEnter();
+    }
+
+  }
 
   return (
     <div className={`has-[:focus]:border-white flex items-center h-14 rounded-3xl border-2 border-gray-700 ${filled && 'bg-gray-700'}`}>
@@ -35,6 +43,7 @@ export const Input = ({ placeholder, password, icon, filled, value, onChange }: 
         placeholder={placeholder}
         value={value}
         onChange={e => onChange && onChange(e.target.value)}
+        onKeyUp={handleKeyUp}
       />
 
       {
